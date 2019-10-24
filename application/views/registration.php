@@ -61,6 +61,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	    }
     </style>
 
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#regBtn').click(function(){
+                
+            })
+        }
+    </script>
 
 </head>
 
