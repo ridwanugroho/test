@@ -1,6 +1,29 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class TestDBModel extends CI_Model{
+class TestModel extends CI_Model{
 
-    
+    private $table;
+    public $id;
+    public $fname;
+    public $lname;
+    public $dateOfBirth;
+    public $gener;
+    public $phone;
+    public $email;
+
+    public function validate(){
+        
+    }
+
+    public function update(){
+
+    }
+
+    public function getAllData(){
+        // return $this->db->get('userinfo')
+        return 'oke';
+    }
+
+
+
 }
