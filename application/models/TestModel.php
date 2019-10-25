@@ -23,7 +23,4 @@ class TestModel extends CI_Model{
         // return $this->db->get('userinfo')
         return 'oke';
     }
-
-
-
 }

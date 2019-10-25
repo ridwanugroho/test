@@ -11,6 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
     <style type="text/css">
         #mainBody{
             font-family: Arial, Helvetica, sans-serif;
@@ -62,11 +63,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </style>
 
     <script type="text/javascript">
-        $(document).ready(function(){
-            $('#regBtn').click(function(){
-                
-            })
+
+        function getController(){
+            jQuery.ajax({
+                type: 'POST',
+                url:'http://localhost/test/index.php/dbCheck',
+                success: function(response){
+                    $('#info').html(response);
+                }
+            });
+        }   
+
+        function sendData(frm){
+            var val = document.getElementById(frm.id).value;
+            var data = {[frm.id] : val}
+            jQuery.ajax({
+                async : false,
+                type : 'POST',
+                url : 'http://localhost/test/index.php/validate',
+                data : {'dataKey' : data},
+                success : function(response){
+                    if(response != "")
+                        console.log(response);
+                }
+            });
         }
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
     </script>
 
 </head>
@@ -77,20 +102,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <body>
     <div align="center" id="mainBody">
-            <h1>REGISTRATION FORM</h1>
-            <div id="registration">
-                <form action="" align="left">
-                    <label>First Name</label><br>
-                    <input type="text" id="fnameInpt" class="cstmForm" placeholder="First name"><br>
-                    <label>Last Name</label><br>
-                    <input type="text" id="lnameInpt" class="cstmForm" placeholder="Last Name"><br>
-                    <label>Phone Number</label><br>
-                    <input type="text" id="phInpt" class="cstmForm" placeholder="Phone Number"><br>
-                    <label>Email Address</label><br>
-                    <input type="text" id="emailInpt" class="cstmForm" placeholder="Email Address"><br>
-                    <input type="submit" id="regBtn" class="btn btn-primary btn-sm" value="REGISTER" onclick="">
-                </form>
-            </div>
+        <h1>REGISTRATION FORM</h1>
+        <div id="registration">
+            <form action="" align="left" onsubmit="return false">
+                <label>First Name</label><br>
+                <input type="text" id="fname" class="cstmForm" placeholder="First name" required onfocusout="sendData(this)"><br>
+                <label>Last Name</label><br>
+                <input type="text" id="lname" class="cstmForm" placeholder="Last Name" required onfocusout="sendData(this)"><br>
+                <label>Phone Number</label><br>
+                <input type="text" id="phone" class="cstmForm" placeholder="Phone Number" required onfocusout="sendData(this)"><br>
+                <label>Email Address</label><br>
+                <input type="text" id="email" class="cstmForm" placeholder="Email Address" required onfocusout="sendData(this)"><br>
+                <input type="radio" id="male" value="male" onfocusout="sendData(this)"> Male
+                <input type="radio" id="female" value="female" onfocusout="sendData(this)"> Female<br>
+                <input type="date" id="date" class="cstmForm" onfocusout="sendData(this)"> Born Date <br>
+                <input type="submit" id="regBtn" class="btn btn-primary btn-sm" value="REGISTER">
+            </form>
+        </div>
     </div>
     <div id="info">
     </div>

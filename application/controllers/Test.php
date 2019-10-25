@@ -10,7 +10,6 @@ class Test extends CI_Controller {
 	}
 
 	public function index(){
-		// $this->load->view('registration');
 		$this->load->view('registration');
 	}
 
@@ -20,20 +19,39 @@ class Test extends CI_Controller {
 
 		$temp = $this->testModel->getAllData();
 		$data = array('content' => $temp);
-		$this->load->view('registration', $data);
+		echo $data['content'];
 	}
 
 	public function validate(){
-		$this->form_validation->set_rules('nama','Nama','required');
-		$this->form_validation->set_rules('email','Email','required');
-		$this->form_validation->set_rules('konfir_email','Konfirmasi Email','required');
- 
-		if($this->form_validation->run() != false){
-			echo "Form validation oke";
-		}else{ 
-			$this->load->view('v_form');
+		$dataForm = $this->input->post('dataKey');
+		if(array_key_exists('fname', $dataForm)){
+			if($dataForm['fname'] != "")
+				print($dataForm['fname']);
+		}
+
+		elseif(array_key_exists('lname', $dataForm)){
+			if($dataForm['lname'] != "")
+				print($dataForm['lname']);
+		}
+
+		elseif(array_key_exists('phone', $dataForm)){
+			if($dataForm['phone'] != "")
+				print($dataForm['phone']);
+		}
+
+		elseif(array_key_exists('email', $dataForm)){
+			if($dataForm['email'] != "")
+				print($dataForm['email']);
+		}
+
+		elseif(array_key_exists('male', $dataForm)){
+			if($dataForm['male'] != "")
+				print($dataForm['male']);
+		}
+
+		elseif(array_key_exists('female', $dataForm)){
+			if($dataForm['female'] != "")
+				print($dataForm['female']);
 		}
 	}
-
-
 }
