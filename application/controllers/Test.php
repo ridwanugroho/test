@@ -29,7 +29,7 @@ class Test extends CI_Controller {
 		foreach($key as $n){
 			if(array_key_exists($n, $dataForm)){
 				if($dataForm[$n] != "")
-					$this->testModel->getAllData($dataForm[$n]);
+					$this->testModel->getAllData($dataForm);
 					// print($dataForm[$n]);
 			}
 		}

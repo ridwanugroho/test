@@ -20,6 +20,6 @@ class TestModel extends CI_Model{
     }
 
     public function getAllData($data){
-        print $data;
+        $this->db->insert('userinfo', $data);
     }
 }
