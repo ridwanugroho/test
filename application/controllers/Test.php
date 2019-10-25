@@ -15,7 +15,9 @@ class Test extends CI_Controller {
 	}
 
 	public function update(){
-		$this->testModel->update();
+		$dataForm = $this->input->post('dateKey');
+		print_r($dataForm);
+		// $this->testModel->update();
 	}
 
 	public function validate(){

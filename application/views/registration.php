@@ -64,12 +64,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <script type="text/javascript">
 
+        var arrToSend = {
+            'fname' : 'null',
+            'lname' : 'null',
+            'phone' : 'null',
+            'email' : 'null',
+            'gender' : 'null',
+            'dob' : 'null'
+        }
+
         function updateDb(){
             jQuery.ajax({
                 type: 'POST',
                 url:'http://localhost/test/index.php/update',
+                data : {'dataKey' : arrToSend},
                 success: function(response){
-                    $('#info').html(response);
+                    console.log(response);
                 }
             });
         }   
@@ -77,23 +87,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         function sendData(frm){
             var val = frm.value;
             if(val != ""){
-                var data = {[frm.id] : val}
-                jQuery.ajax({
-                    async : false,
-                    type : 'POST',
-                    url : 'http://localhost/test/index.php/validate',
-                    data : {'dataKey' : data},
-                    success : function(response){
-                        console.log('respon ' + response);
+                if(frm.id == 'phone' || frm.id == 'email'){
+                    var data = {[frm.id] : val}
+                    jQuery.ajax({
+                        async : false,
+                        type : 'POST',
+                        url : 'http://localhost/test/index.php/validate',
+                        data : {'dataKey' : data},
+                        success : function(response){
+                            console.log('respon ' + response);
 
-                        if(response == 'invalid'){
-                            console.log(response);
-                            window.alert(val + " is exist!");
-                            frm.value = '';
-                            frm.focus();
+                            if(response == 'invalid'){
+                                console.log(response);
+                                window.alert(val + " is exist!");
+                                frm.value = '';
+                                frm.focus();
+                            }
+
+                            else{
+                                if(frm.id == 'phone')
+                                    arrToSend['phone'] = val;
+
+                                else
+                                    arrToSend['email'] = val;
+                            }
                         }
+                    });
+                }
+
+                else{
+                    switch(frm.id){
+                        case 'fname' : arrToSend['fname'] = val; break;
+                        case 'lname' : arrToSend['lname'] = val; break;
+                        case 'male' : arrToSend['gender'] = val; break;
+                        case 'fname' : arrToSend['gender'] = val; break;
+                        case 'date' : arrToSend['dob'] = val; break;
                     }
-                });
+                }
+
+                console.log(arrToSend);
             }
         }
 
