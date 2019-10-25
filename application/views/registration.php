@@ -64,10 +64,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <script type="text/javascript">
 
-        function getController(){
+        function updateDb(){
             jQuery.ajax({
                 type: 'POST',
-                url:'http://localhost/test/index.php/dbCheck',
+                url:'http://localhost/test/index.php/update',
                 success: function(response){
                     $('#info').html(response);
                 }
@@ -75,18 +75,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }   
 
         function sendData(frm){
-            var val = document.getElementById(frm.id).value;
-            var data = {[frm.id] : val}
-            jQuery.ajax({
-                async : false,
-                type : 'POST',
-                url : 'http://localhost/test/index.php/validate',
-                data : {'dataKey' : data},
-                success : function(response){
-                    if(response != "")
-                        console.log(response);
-                }
-            });
+            var val = frm.value;
+            if(val != ""){
+                var data = {[frm.id] : val}
+                jQuery.ajax({
+                    async : false,
+                    type : 'POST',
+                    url : 'http://localhost/test/index.php/validate',
+                    data : {'dataKey' : data},
+                    success : function(response){
+                        console.log('respon ' + response);
+
+                        if(response == 'invalid'){
+                            console.log(response);
+                            window.alert(val + " is exist!");
+                            frm.value = '';
+                            frm.focus();
+                        }
+                    }
+                });
+            }
         }
 
     </script>
@@ -113,7 +121,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <input type="radio" id="male" value="male" onfocusout="sendData(this)"> Male
                 <input type="radio" id="female" value="female" onfocusout="sendData(this)"> Female<br> <br>
                 <input type="date" id="date" class="cstmForm" onfocusout="sendData(this)"> Born Date <br>
-                <input type="submit" id="regBtn" class="btn btn-primary btn-sm" value="REGISTER">
+                <input type="submit" id="regBtn" class="btn btn-primary btn-sm" value="REGISTER" onclick="updateDb()">
             </form>
         </div>
     </div>

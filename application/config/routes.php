@@ -5,5 +5,5 @@ $route['default_controller'] = 'test';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['dbCheck'] = 'test/dbConnect';
+$route['update'] = 'test/update';
 $route['validate'] = 'test/validate';

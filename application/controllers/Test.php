@@ -14,24 +14,13 @@ class Test extends CI_Controller {
 		$this->load->view('registration');
 	}
 
-	public function dbConnect(){
-		$this->load->helper('url');
-
-		$temp = $this->testModel->getAllData();
-		$data = array('content' => $temp);
-		echo $data['content'];
+	public function update(){
+		$this->testModel->update();
 	}
 
 	public function validate(){
-		$key = array('fname', 'lname', 'phone', 'email', 'male', 'female', 'date');
 		$dataForm = $this->input->post('dataKey');
-
-		foreach($key as $n){
-			if(array_key_exists($n, $dataForm)){
-				if($dataForm[$n] != "")
-					$this->testModel->getAllData($dataForm);
-					// print($dataForm[$n]);
-			}
-		}
+		$ret = $this->testModel->writeIntoDb($dataForm);
+		print_r($ret);
 	}
 }
