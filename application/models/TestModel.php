@@ -19,8 +19,7 @@ class TestModel extends CI_Model{
 
     }
 
-    public function getAllData(){
-        // return $this->db->get('userinfo')
-        return 'oke';
+    public function getAllData($data){
+        print $data;
     }
 }

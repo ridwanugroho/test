@@ -89,9 +89,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             });
         }
 
-        $(function () {
-            $('#datetimepicker1').datetimepicker();
-        });
     </script>
 
 </head>
@@ -114,7 +111,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <label>Email Address</label><br>
                 <input type="text" id="email" class="cstmForm" placeholder="Email Address" required onfocusout="sendData(this)"><br>
                 <input type="radio" id="male" value="male" onfocusout="sendData(this)"> Male
-                <input type="radio" id="female" value="female" onfocusout="sendData(this)"> Female<br>
+                <input type="radio" id="female" value="female" onfocusout="sendData(this)"> Female<br> <br>
                 <input type="date" id="date" class="cstmForm" onfocusout="sendData(this)"> Born Date <br>
                 <input type="submit" id="regBtn" class="btn btn-primary btn-sm" value="REGISTER">
             </form>

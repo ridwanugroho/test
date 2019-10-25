@@ -6,6 +6,7 @@ class Test extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->library('form_validation');
+		$this->load->model('testModel');
 		$this->load->helper('url');
 	}
 
@@ -14,7 +15,6 @@ class Test extends CI_Controller {
 	}
 
 	public function dbConnect(){
-		$this->load->model('testModel');
 		$this->load->helper('url');
 
 		$temp = $this->testModel->getAllData();
@@ -23,35 +23,15 @@ class Test extends CI_Controller {
 	}
 
 	public function validate(){
+		$key = array('fname', 'lname', 'phone', 'email', 'male', 'female', 'date');
 		$dataForm = $this->input->post('dataKey');
-		if(array_key_exists('fname', $dataForm)){
-			if($dataForm['fname'] != "")
-				print($dataForm['fname']);
-		}
 
-		elseif(array_key_exists('lname', $dataForm)){
-			if($dataForm['lname'] != "")
-				print($dataForm['lname']);
-		}
-
-		elseif(array_key_exists('phone', $dataForm)){
-			if($dataForm['phone'] != "")
-				print($dataForm['phone']);
-		}
-
-		elseif(array_key_exists('email', $dataForm)){
-			if($dataForm['email'] != "")
-				print($dataForm['email']);
-		}
-
-		elseif(array_key_exists('male', $dataForm)){
-			if($dataForm['male'] != "")
-				print($dataForm['male']);
-		}
-
-		elseif(array_key_exists('female', $dataForm)){
-			if($dataForm['female'] != "")
-				print($dataForm['female']);
+		foreach($key as $n){
+			if(array_key_exists($n, $dataForm)){
+				if($dataForm[$n] != "")
+					$this->testModel->getAllData($dataForm[$n]);
+					// print($dataForm[$n]);
+			}
 		}
 	}
 }
