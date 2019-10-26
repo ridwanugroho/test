@@ -19,7 +19,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             display: block;
             min-width: 260px;
             max-width: 550px;
-            background-color: #32715f;
+            
             color: white;
             position: absolute;
             margin-top: 50px;
@@ -39,6 +39,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         #registration{
+            background-color: #32715f;
+        }
+
+        #registrationFrm{
             max-width: 500px;
         }
 
@@ -51,7 +55,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         .cstmButton {
-            background-color: #043125;
+            background-color: #0e3e30;
+            border-color: #5f8c7f;
             border: none;
             color: white;
             padding: 5px 20px;
@@ -60,43 +65,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             display: inline-block;
             font-size: 16px;
 	    }
-    </style>
 
-    <script type="text/javascript">
-
-        var arrToSend = {
-            'fname' : 'null',
-            'lname' : 'null',
-            'phone' : 'null',
-            'email' : 'null',
-            'gender' : 'null',
-            'dob' : 'null'
+        .disableView{
+            filter: opacity(60%);
         }
 
-        function updateDb(){
-            jQuery.ajax({
-                type: 'POST',
-                url:'http://localhost/test/index.php/update',
-                data : {'dataKey' : arrToSend},
-                success: function(response){
-                    console.log(response);
-                }
-            });
-        }   
+    </style>
+
+    <script type="text/javascript">  
 
         function sendData(frm){
             var val = frm.value;
             if(val != ""){
+                var data = {[frm.id] : val}
                 if(frm.id == 'phone' || frm.id == 'email'){
-                    var data = {[frm.id] : val}
                     jQuery.ajax({
                         async : false,
                         type : 'POST',
                         url : 'http://localhost/test/index.php/validate',
                         data : {'dataKey' : data},
                         success : function(response){
-                            console.log('respon ' + response);
-
                             if(response == 'invalid'){
                                 console.log(response);
                                 window.alert(val + " is exist!");
@@ -104,29 +92,57 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 frm.focus();
                             }
 
-                            else{
-                                if(frm.id == 'phone')
-                                    arrToSend['phone'] = val;
-
-                                else
-                                    arrToSend['email'] = val;
-                            }
+                            else
+                                saveSession(data);
                         }
                     });
                 }
 
-                else{
-                    switch(frm.id){
-                        case 'fname' : arrToSend['fname'] = val; break;
-                        case 'lname' : arrToSend['lname'] = val; break;
-                        case 'male' : arrToSend['gender'] = val; break;
-                        case 'fname' : arrToSend['gender'] = val; break;
-                        case 'date' : arrToSend['dob'] = val; break;
-                    }
-                }
-
-                console.log(arrToSend);
+                else
+                    saveSession(data);
             }
+        }
+
+        function saveSession(data){
+            jQuery.ajax({
+                async : false,
+                type : 'POST',
+                url : 'http://localhost/test/index.php/session',
+                data : {'dataKey' : data},
+                success : function(response){
+                    return response;
+                }
+            });
+        }
+
+        function validateForm(){
+            var frm = document.getElementById('form1');
+            for(var i=0; i<frm.elements.length; i++){
+                if(frm.elements[i].value == '' && frm.elements[i].hasAttribute('required'))
+                    return false;
+            }
+
+            return true;
+        }
+
+        function updateDb(){
+            if(validateForm()){
+                jQuery.ajax({
+                    type : 'POST',
+                    url :'http://localhost/test/index.php/update',
+                    success : function(response){
+                        console.log(response);
+                    }
+                });
+
+                disableForm();
+            }
+        } 
+
+        function disableForm(){
+            $('#registration').attr('class', 'disableView');
+            $('.form1 input').attr('disabled', true);
+            $('#loginBtn').removeAttr('hidden');
         }
 
     </script>
@@ -139,25 +155,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <body>
     <div align="center" id="mainBody">
-        <h1>REGISTRATION FORM</h1>
         <div id="registration">
-            <form action="" align="left" onsubmit="return false">
-                <label>First Name</label><br>
-                <input type="text" id="fname" class="cstmForm" placeholder="First name" required onfocusout="sendData(this)"><br>
-                <label>Last Name</label><br>
-                <input type="text" id="lname" class="cstmForm" placeholder="Last Name" required onfocusout="sendData(this)"><br>
-                <label>Phone Number</label><br>
-                <input type="text" id="phone" class="cstmForm" placeholder="Phone Number" required onfocusout="sendData(this)"><br>
-                <label>Email Address</label><br>
-                <input type="text" id="email" class="cstmForm" placeholder="Email Address" required onfocusout="sendData(this)"><br>
-                <input type="radio" id="male" value="male" onfocusout="sendData(this)"> Male
-                <input type="radio" id="female" value="female" onfocusout="sendData(this)"> Female<br> <br>
-                <input type="date" id="date" class="cstmForm" onfocusout="sendData(this)"> Born Date <br>
-                <input type="submit" id="regBtn" class="btn btn-primary btn-sm" value="REGISTER" onclick="updateDb()">
-            </form>
+            <h1>REGISTRATION FORM</h1>
+            <div id="registrationFrm">
+                <form id='form1' action="" align="left" onsubmit="return false">
+                    <label>First Name</label><br>
+                    <input type="text" id="fname" class="cstmForm" placeholder="First name" required onfocusout="sendData(this)"><br>
+                    <label>Last Name</label><br>
+                    <input type="text" id="lname" class="cstmForm" placeholder="Last Name" required onfocusout="sendData(this)"><br>
+                    <label>Phone Number</label><br>
+                    <input type="number" id="phone" class="cstmForm" placeholder="Phone Number" required onfocusout="sendData(this)"><br>
+                    <label>Email Address</label><br>
+                    <input type="email" id="email" class="cstmForm" placeholder="Email Address" required onfocusout="sendData(this)"><br>
+                    <input type="radio" id="male" value="male" onfocusout="sendData(this)"> Male
+                    <input type="radio" id="female" value="female" onfocusout="sendData(this)"> Female<br> <br>
+                    Born Date <br>
+                    <input type="date" id="date" class="cstmForm" onfocusout="sendData(this)">
+                    <input type="submit" id="regBtn" class="btn btn-primary btn-sm cstmButton" value="REGISTER" onclick="updateDb()">
+                </form>
+            </div>
         </div>
-    </div>
-    <div id="info">
+        <div id="login">
+            <br>
+            <a href="http://localhost/test/index.php/login"><input type="button" id="loginBtn" class="btn btn-primary btn-sm" value="LOGIN" hidden></a>
+        </div>
     </div>
 </body>
 </html>

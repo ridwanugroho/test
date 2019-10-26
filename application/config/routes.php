@@ -7,3 +7,5 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['update'] = 'test/update';
 $route['validate'] = 'test/validate';
+$route['session'] = 'test/startSession';
+$route['login'] = 'test/gotoLogin';

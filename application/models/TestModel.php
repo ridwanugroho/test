@@ -34,12 +34,11 @@ class TestModel extends CI_Model{
         return true;
     }
 
-    public function update(){
+    public function update($data){
         $arr['id'] = (string)$this->generateId();
-
-        print_r($arr);
-
-        // $this->db->insert($arr, $this->table);
+        $arr = array_merge($arr, $data);
+        $this->db->insert($this->table, $arr);
+        return $arr;
     }
 
     public function writeIntoDb($data){
