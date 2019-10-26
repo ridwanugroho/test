@@ -64,6 +64,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             text-decoration: none;
             display: inline-block;
             font-size: 16px;
+            margin-bottom: 10px;
 	    }
 
         .disableView{
